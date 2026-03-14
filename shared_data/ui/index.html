@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>W.N.U.K. A. | ARCHITECT CORE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;500&display=swap');
+        body { 
+            background-color: #050505; 
+            color: #00ff41; 
+            font-family: 'Fira Code', monospace;
+            background-image: radial-gradient(#003b00 0.5px, transparent 0.5px);
+            background-size: 30px 30px;
+        }
+        .crt-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%; pointer-events: none; z-index: 50;
+        }
+        .glow { text-shadow: 0 0 10px #00ff41; }
+        .agent-card { border: 1px solid #00ff41; background: rgba(0, 40, 0, 0.2); transition: all 0.3s; }
+        .agent-card:hover { box-shadow: 0 0 20px rgba(0, 255, 65, 0.4); transform: translateY(-2px); }
+        .btn-veto { background: #440000; border: 2px solid #ff0000; color: #ff0000; transition: all 0.2s; }
+        .btn-veto:hover { background: #ff0000; color: #000; box-shadow: 0 0 30px #ff0000; }
+        @keyframes scanline { 0% { bottom: 100%; } 100% { bottom: 0%; } }
+        .scanline { position: absolute; width: 100%; height: 2px; background: rgba(0, 255, 65, 0.1); animation: scanline 8s linear infinite; }
+    </style>
+</head>
+<body class="p-8 overflow-hidden h-screen flex flex-col">
+    <div class="crt-overlay"></div>
+    <div class="scanline"></div>
+
+    <header class="flex justify-between items-center border-b border-green-900 pb-4 mb-8">
+        <div>
+            <h1 class="text-4xl font-bold glow">wnuk ANTONA <span class="text-sm font-thin opacity-50">v8.0-BLACKWELL</span></h1>
+            <p class="text-xs opacity-70">ARCHITECT SESSION: ACTIVE | HARDWARE: ASUS GX10 GB10</p>
+        </div>
+        <div class="text-right">
+            <div id="clock" class="text-2xl font-bold italic">00:00:00</div>
+            <div class="text-[10px] text-red-500 uppercase tracking-widest leading-none">Status: Monitoring Sensory Stream</div>
+        </div>
+    </header>
+
+    <main class="flex-grow grid grid-cols-4 gap-6 overflow-hidden">
+        
+        <div class="col-span-1 space-y-4">
+            <h2 class="text-xl border-l-4 border-green-500 pl-2 mb-4">ENTITY STATUS</h2>
+            
+            <div class="agent-card p-4 rounded">
+                <div class="flex justify-between"><span>AGENT A [ENG]</span><span class="text-[10px] bg-green-900 px-1">ACTIVE</span></div>
+                <div class="h-20 bg-black mt-2 border border-green-900 flex items-center justify-center italic text-xs opacity-40">AVATAR LOADING...</div>
+            </div>
+
+            <div class="agent-card p-4 rounded">
+                <div class="flex justify-between"><span>AGENT B [CRT]</span><span class="text-[10px] bg-green-900 px-1">ACTIVE</span></div>
+                <div class="h-20 bg-black mt-2 border border-green-900 flex items-center justify-center italic text-xs opacity-40">AVATAR LOADING...</div>
+            </div>
+
+            <div class="agent-card p-4 rounded">
+                <div class="flex justify-between"><span>AGENT C [INK]</span><span class="text-[10px] bg-red-900 px-1 animate-pulse">JUDGING</span></div>
+                <div class="h-20 bg-black mt-2 border border-green-900 flex items-center justify-center italic text-xs opacity-40 italic">INKWIZYTOR PATRZY</div>
+            </div>
+        </div>
+
+        <div class="col-span-2 flex flex-col border border-green-900 rounded bg-black p-4 bg-opacity-50">
+            <div class="flex justify-between items-center mb-2 text-xs border-b border-green-900 pb-2">
+                <span>> LIVE_STREAM: DEBATE_CORE</span>
+                <span class="animate-pulse text-red-500">● RECORDING</span>
+            </div>
+            <div id="log-container" class="flex-grow overflow-y-auto text-sm space-y-2 opacity-80">
+                <p class="text-gray-500">[SYSTEM] Initializing memory bridges...</p>
+                <p class="text-gray-500">[SYSTEM] Qdrant connection established.</p>
+                <p class="text-gray-500">[SYSTEM] Redis L1 cache: 0.04ms latency.</p>
+                <p class="text-blue-400"><strong>AGENT A:</strong> Analizuję stream z sensora 0. Wykryto korelację między drganiami a spadkiem napięcia.</p>
+                <p class="text-purple-400"><strong>AGENT B:</strong> Czy uwzględniłeś wpływ temperatury otoczenia na lepkość smaru?</p>
+                <p class="text-red-400"><strong>AGENT C:</strong> Argument Agenta B jest istotny. Agent A, popraw obliczenia.</p>
+            </div>
+        </div>
+
+        <div class="col-span-1 space-y-6">
+            <div class="agent-card p-4 rounded border-red-900">
+                <h3 class="text-sm mb-4 text-center">OVERRIDE CONSOLE</h3>
+                <button class="btn-veto w-full py-4 font-bold text-xl rounded mb-4">VETO</button>
+                <button class="w-full border border-green-700 py-2 text-xs hover:bg-green-900 mb-2">FORCE SLEEP CYCLE</button>
+                <button class="w-full border border-green-700 py-2 text-xs hover:bg-green-900">REGENERATE AVATARS</button>
+            </div>
+
+            <div class="agent-card p-4 rounded bg-black bg-opacity-80">
+                <h3 class="text-xs mb-2 tracking-widest uppercase opacity-50">Sensor Feed</h3>
+                <div class="h-32 bg-green-900 bg-opacity-20 rounded border border-green-800 relative overflow-hidden">
+                    <div class="absolute inset-0 flex items-center justify-center text-[10px] opacity-30 italic text-center p-2">
+                        VIDEO_STREAM_01<br>AWAITING AGENT D INPUT
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-4 text-[10px] opacity-40 flex justify-between">
+        <span>PROJECT: wnuk ANTONA (W.N.U.K. A.) // ARCHITECT: ANTON'S GRANDSON</span>
+        <span>CPU: GRACE-ARM | GPU: BLACKWELL-GB10 | MEM: 128GB LPDDR5x</span>
+    </footer>
+
+    <script>
+    const logContainer = document.getElementById('log-container');
+    const clock = document.getElementById('clock');
+
+    // Zegar systemowy
+    setInterval(() => {
+        clock.innerText = new Date().toLocaleTimeString();
+    }, 1000);
+
+    // Funkcja dodawania logów na żywo
+    function addLog(sender, text, colorClass) {
+        const p = document.createElement('p');
+        p.className = colorClass + " opacity-0 transition-opacity duration-500";
+        p.innerHTML = `<strong>[\${new Date().toLocaleTimeString()}] \${sender}:</strong> \${text}`;
+        logContainer.appendChild(p);
+        
+        // Efekt płynnego pojawiania się
+        setTimeout(() => p.classList.remove('opacity-0'), 10);
+        
+        // Auto-scroll
+        logContainer.scrollTop = logContainer.scrollHeight;
+
+        // Usuwanie starych logów (limit 50)
+        if (logContainer.childNodes.length > 50) {
+            logContainer.removeChild(logContainer.firstChild);
+        }
+    }
+
+    // Symulacja odbiornika (W wersji docelowej tu będzie fetch do Agenta C)
+    // Na potrzeby testu włączamy auto-generowanie logów z systemu
+    window.addEventListener('load', () => {
+        addLog("SYSTEM", "Most komunikacyjny ustanowiony. Czekam na dane...", "text-gray-500");
+    });
+</script>
+
+</body>
+</html>

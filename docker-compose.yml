@@ -1,0 +1,85 @@
+version: '3.9'
+
+services:
+  redis:
+    image: redis:7.2-alpine
+    container_name: wnuk_redis
+    networks: [wnuk_net]
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: wnuk_qdrant
+    volumes: ['./shared_data/qdrant:/qdrant/storage']
+    deploy:
+      resources:
+        reservations:
+          devices: [{driver: nvidia, count: 1, capabilities: [gpu]}]
+    networks: [wnuk_net]
+
+  agent_a:
+    build: ./agents/executor_a
+    container_name: wnuk_executor_a
+    depends_on: [redis, qdrant]
+    environment:
+      - ROLE=EXECUTOR_A
+      - REDIS_URL=redis://redis:6379
+    deploy:
+      resources:
+        reservations:
+          devices: [{driver: nvidia, device_ids: ['0'], capabilities: [gpu]}]
+    networks: [wnuk_net]
+
+  agent_b:
+    build: ./agents/executor_b
+    container_name: wnuk_executor_b
+    depends_on: [redis, qdrant]
+    environment:
+      - ROLE=EXECUTOR_B
+      - REDIS_URL=redis://redis:6379
+    deploy:
+      resources:
+        reservations:
+          devices: [{driver: nvidia, device_ids: ['0'], capabilities: [gpu]}]
+    networks: [wnuk_net]
+
+  agent_c:
+    build: ./agents/mentor
+    container_name: wnuk_mentor_c
+    ipc: host # Daje dostep do pelnej pamieci wspoldzielonej hosta
+    ports:
+      - "8000:8000"
+    environment:
+      - ROLE=MENTOR
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices: [{driver: nvidia, device_ids: ['0'], capabilities: [gpu]}]
+    networks: [wnuk_net]
+
+  agent_d:
+    build: ./agents/librarian
+    container_name: wnuk_librarian_d
+    privileged: true
+    environment:
+      - ROLE=LIBRARIAN
+    volumes:
+      - /dev/video0:/dev/video0
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./shared_data/common:/app/shared
+    deploy:
+      resources:
+        reservations:
+          devices: [{driver: nvidia, device_ids: ['0'], capabilities: [gpu, video]}]
+    networks: [wnuk_net]
+
+  dashboard:
+    image: nginx:alpine
+    container_name: wnuk_architect_ui
+    ports: ["8080:80"]
+    volumes: ['./shared_data/ui:/usr/share/nginx/html']
+    networks: [wnuk_net]
+
+networks:
+  wnuk_net:
+    driver: bridge
